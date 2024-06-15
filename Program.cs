@@ -1,3 +1,3 @@
 ﻿
-using var game = new Villainer.Game1();
+using var game = new Villainer.Villainer();
 game.Run();
