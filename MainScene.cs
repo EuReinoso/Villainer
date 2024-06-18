@@ -7,6 +7,11 @@ using MgEngine.Time;
 using MgEngine.Shape;
 using MgEngine.Screen;
 using Villainer.Script;
+using MgEngine.Map;
+using MgEngine.Util;
+using System.Collections.Generic;
+using System;
+using MgEngine.Component;
 
 namespace Villainer
 {
@@ -15,6 +20,7 @@ namespace Villainer
         #region Variables
 
         Player _player;
+        Tiled _map;
 
         #endregion
 
@@ -34,6 +40,11 @@ namespace Villainer
         public override void LoadContent(ContentManager content)
         {
             _player.Load(content);
+
+            var spriteSheet = new SpriteSheet(content, "Map/Tiles", 32, 32);
+
+            _map =  new Tiled(spriteSheet);
+            _map.ReadMap(MgFiles.RootDirectory + "/Content/Map/map1.json");
         }
 
         public override void Update(float dt, Inputter inputter)
@@ -43,6 +54,8 @@ namespace Villainer
         
         public override void Draw(SpriteBatch spriteBatch, ShapeBatch sprites)
         {
+            _map.Draw(spriteBatch);
+
             _player.Draw(spriteBatch);
         }
         #endregion
