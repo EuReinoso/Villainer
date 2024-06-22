@@ -1,5 +1,6 @@
 ﻿using MgEngine.Component;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace Villainer.Script
 {
-    public class Player : Platformer
+    public class SnakeShake : Platformer
     {
-        private byte _life = 3;
-
-        public Player() : base()
+        public SnakeShake() : base()
         {
 
         }
@@ -21,16 +20,14 @@ namespace Villainer.Script
         {
             var anim = new Animator(content);
 
-            anim.Add("Player/Player_idle", "Idle", 25, 32, new() { 8,8,8,8});
-            anim.Add("Player/Player_walk", "Walk", 24, 32, new() { 7, 7, 7, 7, 7, 7, 7, 7 });
+            anim.Add("Enemy/SnakeShake_idle", "Idle", 32, 32, new() { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8 });
 
             SetAnimator(anim);
             SetAction("Idle");
-        }
 
-        public void Damage(byte amount = 1)
-        {
-            _life -= amount;
+            ResizeScale(4);
+
+            Effect = SpriteEffects.None;
         }
     }
 }

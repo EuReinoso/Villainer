@@ -8,6 +8,7 @@ using MgEngine.Time;
 using MgEngine.Screen;
 using MgEngine.Shape;
 using MgEngine.Util;
+using MgEngine.Audio;
 
 namespace Villainer
 {
@@ -38,6 +39,8 @@ namespace Villainer
             MgDefault.Initialize(Content);
             MgDefault.Scale = 2;
 
+            Singer.Initialize(Content);
+
             _shapeBatch = new(GraphicsDevice);
             _spriteBatch = new(GraphicsDevice);
 
@@ -60,6 +63,9 @@ namespace Villainer
 
         protected override void LoadContent()
         {
+            Singer.AddSound("Audio/Jump", "Jump");
+            Singer.AddMusic("Audio/Snake Shake", "SnakeShake");
+
             _scene.LoadContent(Content);
         }
 
