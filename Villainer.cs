@@ -9,6 +9,7 @@ using MgEngine.Screen;
 using MgEngine.Shape;
 using MgEngine.Util;
 using MgEngine.Audio;
+using MgEngine.Effect;
 
 namespace Villainer
 {
@@ -40,6 +41,7 @@ namespace Villainer
             MgDefault.Scale = 2;
 
             Singer.Initialize(Content);
+            Particlerr.Initialize(Content);
 
             _shapeBatch = new(GraphicsDevice);
             _spriteBatch = new(GraphicsDevice);

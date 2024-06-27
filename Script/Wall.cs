@@ -1,5 +1,7 @@
 ﻿using MgEngine.Component;
+using MgEngine.Effect;
 using MgEngine.Input;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Villainer.Script
@@ -28,7 +30,8 @@ namespace Villainer.Script
 
         public void Explode()
         {
-
+            Particlerr.Add(ParticleShape.Triangle, "wallExplosion", 20, Pos, Color.SteelBlue);
+            Particlerr.Add(ParticleShape.Triangle, "wallExplosion", 5, Pos, Color.White);
         }
     }
 }

@@ -15,6 +15,7 @@ using MgEngine.Component;
 using MgEngine.Audio;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
+using MgEngine.Effect;
 
 namespace Villainer
 {
@@ -53,6 +54,7 @@ namespace Villainer
             _physics.Gravity = new Vector2(0, 25);
 
             Scroller.SetEntityTarget(_player);
+            LoadMoveEffects();
         }
 
         public override void LoadContent(ContentManager content)
@@ -67,17 +69,17 @@ namespace Villainer
             _terrain = _map.GetLayer<Entity>("Terrain");
             _walls = _map.GetLayer<Wall>("Walls");
 
-            StartWallFall();
-
             Scroller.CalculateBorders(_map.GetLayer<Entity>("Terrain"),0, 30);
             _floorY = Scroller.MaxY + Window.Canvas.Height;
 
             Singer.PlayMusic("SnakeShake");
             Singer.MusicVolume = .5f;
+            Singer.MasterVolume = 0.1f;
         }
 
         public override void Update(float dt, Inputter inputter)
         {
+
             Scroller.Update();
 
             _player.Animate(dt);
@@ -92,25 +94,65 @@ namespace Villainer
 
             _wallsFall.UpdateList(inputter, dt);
             UpdateWallFall();
+
+            Particlerr.Update(dt);
+            Color color = Color.White;
+
+            if (inputter.IsKeyDown(Keys.LeftShift))
+                color = MgUtil.RandomColor();
+
+            var mPos = inputter.GetMousePos();
+            if (inputter.IsKeyDown(Keys.Z))
+            {
+                Particlerr.Add(ParticleShape.Circle, "wallExplosion", 2, mPos, color);
+            }
+            if (inputter.IsKeyDown(Keys.X))
+            {
+                Particlerr.Add(ParticleShape.Rect, "wallExplosion", 2, mPos, color);
+            }
+            if (inputter.IsKeyDown(Keys.C))
+            {
+                Particlerr.Add(ParticleShape.Triangle, "wallExplosion", 2, mPos, color);
+            }
+            if (inputter.KeyDown(Keys.E))
+            {
+                StartWallFall(10);
+            }
         }
         
         public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
         {
             //_map.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
+            //_enemy.DrawRect(shapeBatch, new Color(255, 0, 0, 0.001f), -Scroller.X, -Scroller.Y);
+
             Entity.DrawList(_terrain, spriteBatch, -Scroller.X, -Scroller.Y);
             Entity.DrawList(_walls, spriteBatch, -Scroller.X, -Scroller.Y);
             Entity.DrawList(_wallsFall, spriteBatch, -Scroller.X, -Scroller.Y);
 
             NextLayer();
             _enemy.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
-            //_enemy.DrawRect(shapeBatch, new Color(255, 0, 0, 0.001f), -Scroller.X, -Scroller.Y);
 
             _player.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
 
+            Particlerr.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
         }
         #endregion
 
         #region Methods
+        private void LoadMoveEffects()
+        {
+            var wallExplosion = new ParticleMoveEffect();
+            wallExplosion.SizeMinStart = 10;
+            wallExplosion.SizeMaxStart = 20;
+            wallExplosion.VelocityMinStart = new Vector2(-3, -3);
+            wallExplosion.VelocityMaxStart = new Vector2(3, 3);
+            wallExplosion.SizeDecay = 0.6f;
+            wallExplosion.MinRotationVelocity = -.2f;
+            wallExplosion.MaxRotationVelocity = .2f;
+
+            Particlerr.AddMoveEffect("wallExplosion", wallExplosion);
+        }
+
         private void StartWallFall(int quant = 30)
         {
             var rand = new Random();
@@ -124,7 +166,6 @@ namespace Villainer
                 _wallsFall.Add(_walls[index]);
                 _walls.RemoveAt(index);
             }
-
         }
 
         private void UpdateWallFall()
