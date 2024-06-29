@@ -65,8 +65,8 @@ namespace Villainer
 
         protected override void LoadContent()
         {
-            Singer.AddSound("Audio/Jump", "Jump");
-            Singer.AddMusic("Audio/Snake Shake", "SnakeShake");
+            Singer.AddAllSound("Audio/SFX");
+            Singer.AddAllMusic("Audio/Music");
 
             _scene.LoadContent(Content);
         }

@@ -13,17 +13,41 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Audio/Jump.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/Jump.wav
-
-#begin Audio/Snake Shake.mp3
+#begin Audio/Music/Snake Shake.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:Audio/Snake Shake.mp3
+/build:Audio/Music/Snake Shake.mp3
+
+#begin Audio/SFX/Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Jump.wav
+
+#begin Audio/SFX/PlayerDamage.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/PlayerDamage.wav
+
+#begin Audio/SFX/Recall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Recall.wav
+
+#begin Audio/SFX/StartFall.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/StartFall.wav
+
+#begin Audio/SFX/WallDestroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/WallDestroy.wav
 
 #begin Effect/Default/Circle.png
 /importer:TextureImporter
