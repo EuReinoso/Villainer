@@ -72,14 +72,13 @@ namespace Villainer
             Scroller.CalculateBorders(_map.GetLayer<Entity>("Terrain"),0, 30);
             _floorY = Scroller.MaxY + Window.Canvas.Height;
 
-            Singer.PlayMusic("SnakeShake");
-            Singer.MusicVolume = .5f;
-            Singer.MasterVolume = 0.1f;
+            Singer.PlayMusic("Snake Shake");
+            Singer.SoundEffectsVolume = .3f;
+            Singer.MasterVolume = .3f;
         }
 
         public override void Update(float dt, Inputter inputter)
         {
-
             Scroller.Update();
 
             _player.Animate(dt);
@@ -96,28 +95,9 @@ namespace Villainer
             UpdateWallFall();
 
             Particlerr.Update(dt);
-            Color color = Color.White;
 
-            if (inputter.IsKeyDown(Keys.LeftShift))
-                color = MgUtil.RandomColor();
-
-            var mPos = inputter.GetMousePos();
-            if (inputter.IsKeyDown(Keys.Z))
-            {
-                Particlerr.Add(ParticleShape.Circle, "wallExplosion", 2, mPos, color);
-            }
-            if (inputter.IsKeyDown(Keys.X))
-            {
-                Particlerr.Add(ParticleShape.Rect, "wallExplosion", 2, mPos, color);
-            }
-            if (inputter.IsKeyDown(Keys.C))
-            {
-                Particlerr.Add(ParticleShape.Triangle, "wallExplosion", 2, mPos, color);
-            }
             if (inputter.KeyDown(Keys.E))
-            {
                 StartWallFall(10);
-            }
         }
         
         public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
@@ -150,7 +130,16 @@ namespace Villainer
             wallExplosion.MinRotationVelocity = -.2f;
             wallExplosion.MaxRotationVelocity = .2f;
 
-            Particlerr.AddMoveEffect("wallExplosion", wallExplosion);
+            Particlerr.AddMoveEffect(Particles.Explosion, wallExplosion);
+
+            var wallFall = new ParticleMoveEffect();
+            wallFall.SizeMinStart = 3;
+            wallFall.SizeMaxStart = 3;
+            wallFall.VelocityMinStart = new Vector2(-.5f, -1);
+            wallFall.VelocityMaxStart = new Vector2(.5f, -1);
+            wallFall.SizeDecay = 0.2f;
+
+            Particlerr.AddMoveEffect(Particles.Fall, wallFall);
         }
 
         private void StartWallFall(int quant = 30)
@@ -159,13 +148,23 @@ namespace Villainer
 
             for (int i = 0; i < quant; i++)
             {
+                if (_walls.Count <= 0)
+                    continue;
+
                 int index = rand.Next(_walls.Count);
 
                 _walls[index].IsFalling = true;
+                _walls[index].ColorEffect = Color.LightGray;
+                _walls[index].IsBorderEnabled = true;
+
+                if (rand.NextSingle() <= 0.3f)
+                    _walls[index].ActivateRecall();
 
                 _wallsFall.Add(_walls[index]);
                 _walls.RemoveAt(index);
             }
+
+            Singer.PlaySound("StartFall");
         }
 
         private void UpdateWallFall()
@@ -187,7 +186,12 @@ namespace Villainer
                     }
                 }
 
-                if (Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.Rect.GetVertices(), out Vector2 normalB, out float depthB))
+                if (wall.IsRecallActive && _player.RecallActive && Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.RecallRect.GetVertices(), out Vector2 normalC, out float depthC))
+                {
+                    explode = true;
+                    _player.Recall();
+                }
+                else if (Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.Rect.GetVertices(), out Vector2 normalB, out float depthB))
                     _player.Damage();
 
                 if (explode)
@@ -196,6 +200,8 @@ namespace Villainer
                     _wallsFall.Remove(wall);
                 }
             }
+
+            _player.RecallActive = false;
         }
         #endregion
 
