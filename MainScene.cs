@@ -81,8 +81,9 @@ namespace Villainer
         {
             Scroller.Update();
 
+            _player.Update(dt);
             _player.Animate(dt);
-            _player.UpdateMove(inputter, dt);
+            _player.UpdateMove(inputter);
             _player.Move(dt);
             _player.UpdateCollision(_terrain);
             _player.UpdatePhysics(_physics, dt);
@@ -112,9 +113,10 @@ namespace Villainer
             NextLayer();
             _enemy.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
 
-            _player.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
-
             Particlerr.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
+
+            _player.DrawDashEffect(spriteBatch, -Scroller.X, -Scroller.Y);
+            _player.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
         }
         #endregion
 
@@ -140,6 +142,15 @@ namespace Villainer
             wallFall.SizeDecay = 0.2f;
 
             Particlerr.AddMoveEffect(Particles.Fall, wallFall);
+
+            var dash = new ParticleMoveEffect();
+            dash.SizeMinStart = 3;
+            dash.SizeMaxStart = 3;
+            dash.VelocityMinStart = new Vector2(0, 0);
+            dash.VelocityMaxStart = new Vector2(0, 0);
+            dash.SizeDecay = 0.1f;
+
+            Particlerr.AddMoveEffect(Particles.Dash, dash);
         }
 
         private void StartWallFall(int quant = 30)
@@ -191,8 +202,12 @@ namespace Villainer
                     explode = true;
                     _player.Recall();
                 }
-                else if (Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.Rect.GetVertices(), out Vector2 normalB, out float depthB))
+                else if (!_player.InvencibleTimer.IsActivate 
+                    && Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.Rect.GetVertices(), out Vector2 normalB, out float depthB))
+                {
                     _player.Damage();
+                    explode = true;
+                }
 
                 if (explode)
                 {

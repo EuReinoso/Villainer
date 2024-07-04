@@ -30,18 +30,18 @@ namespace Villainer.Script
             if (IsFalling)
             {
                 Y += FallVelocity * dt;
-                Particlerr.Add(ParticleShape.Circle, Particles.Fall, 1, Rect.LeftTop, Color.White);
-                Particlerr.Add(ParticleShape.Circle, Particles.Fall, 1, Rect.RightTop, Color.White);
+                Particlerr.Add(1, ParticleShape.Circle, Particles.Fall, Rect.LeftTop, Color.White);
+                Particlerr.Add(1, ParticleShape.Circle, Particles.Fall,  Rect.RightTop, Color.White);
             }
         }
 
         public void Explode()
         {
-            Particlerr.Add(ParticleShape.Triangle, Particles.Explosion, 5, Pos, Color.White);
+            Particlerr.Add(5, ParticleShape.Triangle, Particles.Explosion, Pos, Color.White);
             if (IsRecallActive)
-                Particlerr.Add(ParticleShape.Triangle, Particles.Explosion, 20, Pos, RecallColor);
+                Particlerr.Add(20, ParticleShape.Triangle, Particles.Explosion, Pos, RecallColor);
             else
-                Particlerr.Add(ParticleShape.Triangle, Particles.Explosion, 20, Pos, Color.SteelBlue);
+                Particlerr.Add(20, ParticleShape.Triangle, Particles.Explosion, Pos, Color.SteelBlue);
 
             Singer.PlaySound("WallDestroy");
         }

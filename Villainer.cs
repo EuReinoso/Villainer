@@ -41,7 +41,7 @@ namespace Villainer
             MgDefault.Scale = 2;
 
             Singer.Initialize(Content);
-            Particlerr.Initialize(Content);
+            Particlerr.Initialize();
 
             _shapeBatch = new(GraphicsDevice);
             _spriteBatch = new(GraphicsDevice);

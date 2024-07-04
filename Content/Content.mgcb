@@ -19,6 +19,12 @@
 /processorParam:Quality=Best
 /build:Audio/Music/Snake Shake.mp3
 
+#begin Audio/SFX/Dash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Dash.wav
+
 #begin Audio/SFX/Jump.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

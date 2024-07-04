@@ -10,5 +10,6 @@ namespace Villainer.Script
     {
         Explosion,
         Fall,
+        Dash,
     }
 }
