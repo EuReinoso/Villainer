@@ -41,6 +41,8 @@ namespace Villainer.Script
 
             anim.Add("Player/Player_idle", "Idle", 25, 32, new() { 8, 8, 8, 8 });
             anim.Add("Player/Player_walk", "Walk", 24, 32, new() { 7, 7, 7, 7, 7, 7, 7, 7 });
+            anim.Add("Player/Player_dash", "Dash", 25, 32, new() { 7, 7, 7 }, onReset : DefaultAction);
+            anim.Add("Player/Player_shoot", "Shoot", 23, 32, new() { 4, 4, 4, 8, 4, 4 }, onReset : DefaultAction);
 
             SetAnimator(anim);
             SetAction("Idle");
@@ -93,6 +95,8 @@ namespace Villainer.Script
 
                 IsDashing = true;
                 IsDashActive = false;
+                SetAction("Dash");
+                PriorityActionActive = true;
                 Singer.PlaySound("Dash");
             }
         }
@@ -162,6 +166,11 @@ namespace Villainer.Script
             {
                 item.Item1.Draw(spriteBatch, scrollX, scrollY);
             }
+        }
+
+        private void DefaultAction()
+        {
+            PriorityActionActive = false;
         }
     }
 }
