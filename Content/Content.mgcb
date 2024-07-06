@@ -13,11 +13,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Audio/Music/Snake Shake.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Audio/Music/Snake Shake.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/Music/Snake Shake.mp3
+/build:Audio/Music/Snake Shake.wav
 
 #begin Audio/SFX/Dash.wav
 /importer:WavImporter
@@ -42,6 +42,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SFX/Recall.wav
+
+#begin Audio/SFX/Shoot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Shoot.wav
 
 #begin Audio/SFX/StartFall.wav
 /importer:WavImporter
@@ -195,6 +201,18 @@
 /processorParam:TextureFormat=Color
 /build:Player/Player_idle.png
 
+#begin Player/Player_shoot_up.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/Player_shoot_up.png
+
 #begin Player/Player_shoot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -218,6 +236,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Player/Player_walk.png
+
+#begin Player/Shoot.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/Shoot.png
 
 #begin UI/Default/Button.png
 /importer:TextureImporter
