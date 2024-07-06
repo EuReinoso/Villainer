@@ -32,11 +32,11 @@ namespace Villainer
         List<Wall> _wallsFall = new();
         List<Entity> _terrain;
 
-        float _floorY;
+        Timer _damageEffectTimer = new(2);
         #endregion
 
         #region Constructor
-        public MainScene(Window window, Camera camera) : base(window, camera)
+        public MainScene(Window window, Camera camera, Clock clock) : base(window, camera, clock)
         { 
         }
         #endregion
@@ -44,6 +44,8 @@ namespace Villainer
         #region Loop
         public override void Initialize()
         {
+            _damageEffectTimer.Elapsed += DamageEffectTimer_Elapsed;
+
             _player = new();
             _player.Pos = new(100, 500);
 
@@ -70,16 +72,14 @@ namespace Villainer
             _walls = _map.GetLayer<Wall>("Walls");
 
             Scroller.CalculateBorders(_map.GetLayer<Entity>("Terrain"),0, 30);
-            _floorY = Scroller.MaxY + Window.Canvas.Height;
 
-            Singer.PlayMusic("Snake Shake");
-            Singer.SoundEffectsVolume = .3f;
-            Singer.MasterVolume = .3f;
+            Singer.PlayMusicEffect("Snake Shake");
         }
 
         public override void Update(float dt, Inputter inputter)
         {
-            Scroller.Update();
+            RecallReset();
+            Scroller.Update(dt);
 
             _player.Update(dt);
             _player.Animate(dt);
@@ -99,6 +99,8 @@ namespace Villainer
 
             if (inputter.KeyDown(Keys.E))
                 StartWallFall(10);
+
+            _damageEffectTimer.Update(dt);
         }
         
         public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
@@ -151,6 +153,29 @@ namespace Villainer
             dash.SizeDecay = 0.1f;
 
             Particlerr.AddMoveEffect(Particles.Dash, dash);
+
+
+            var playerDamage = new ParticleMoveEffect();
+            playerDamage.SizeMinStart = 30;
+            playerDamage.SizeMaxStart = 40;
+            playerDamage.VelocityMinStart = new Vector2(-20, -4);
+            playerDamage.VelocityMaxStart = new Vector2(20, 4);
+            playerDamage.SizeDecay = 2f;
+            playerDamage.MinRotationVelocity = -.2f;
+            playerDamage.MaxRotationVelocity = .2f;
+
+            Particlerr.AddMoveEffect(Particles.PlayerDamage, playerDamage);
+
+            var recallExplosion = new ParticleMoveEffect();
+            recallExplosion.SizeMinStart = 20;
+            recallExplosion.SizeMaxStart = 30;
+            recallExplosion.VelocityMinStart = new Vector2(-10, -10);
+            recallExplosion.VelocityMaxStart = new Vector2(10, 10);
+            recallExplosion.SizeDecay = 1f;
+            recallExplosion.MinRotationVelocity = -.2f;
+            recallExplosion.MaxRotationVelocity = .2f;
+
+            Particlerr.AddMoveEffect(Particles.RecallExplosion, recallExplosion);
         }
 
         private void StartWallFall(int quant = 30)
@@ -197,26 +222,43 @@ namespace Villainer
                     }
                 }
 
-                if (wall.IsRecallActive && _player.RecallActive && Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.RecallRect.GetVertices(), out Vector2 normalC, out float depthC))
-                {
-                    explode = true;
-                    _player.Recall();
-                }
-                else if (!_player.InvencibleTimer.IsActivate 
-                    && Polygon.CollidePolygon(wall.Rect.GetVertices(), _player.Rect.GetVertices(), out Vector2 normalB, out float depthB))
-                {
-                    _player.Damage();
-                    explode = true;
-                }
+                wall.MeasureRecall(_player, out bool recall, out bool damage, out float recallDepth);
 
-                if (explode)
+                if (damage)
+                    StartDamageEffect();
+
+                if (explode || recall || damage)
                 {
                     wall.Explode();
                     _wallsFall.Remove(wall);
                 }
             }
+            
+        }
 
-            _player.RecallActive = false;
+        private void RecallReset()
+        {
+            _player.IsRecallActive = false;
+        }
+
+        protected void StartDamageEffect()
+        {
+            Clock.Speed = .1f;
+            Singer.SetSpeed(-.9f);
+            Singer.MusicVolume = 0.1f;
+            Singer.VolumeFlush();
+            Scroller.Shake(20, -5, 5);
+            Window.Canvas.ColorEffect = Color.LightGray;
+            _damageEffectTimer.Start();
+        }
+
+        private void DamageEffectTimer_Elapsed()
+        {
+            Clock.Speed = 1;
+            Singer.SetSpeed(0);
+            Singer.MusicVolume = 1f;
+            Singer.VolumeFlush();
+            Window.Canvas.ColorEffect = Color.White;
         }
         #endregion
 

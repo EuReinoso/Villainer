@@ -11,5 +11,7 @@ namespace Villainer.Script
         Explosion,
         Fall,
         Dash,
+        PlayerDamage,
+        RecallExplosion,
     }
 }
