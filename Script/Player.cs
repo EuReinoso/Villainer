@@ -29,7 +29,7 @@ namespace Villainer.Script
         public int InvencibleTime = 60;
         public Timer InvencibleTimer;
         public List<Tuple<Entity, Timer>> DashEffect = new();
-        public int Shoots = 0;
+        public int Shoots = 100;
         public int ShootsLimit = 3;
         public Animator ShootAnimator;
         public List<Shoot> ShootsList = new();

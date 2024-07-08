@@ -1,4 +1,5 @@
-﻿using MgEngine.Component;
+﻿using MgEngine.Audio;
+using MgEngine.Component;
 using MgEngine.Effect;
 using MgEngine.Time;
 using MgEngine.Util;
@@ -38,7 +39,9 @@ namespace Villainer.Script
 
         public void Explode()
         {
-
+            IsExploded = true;
+            Particlerr.Add(5, ParticleShape.Triangle, Particles.Explosion, Pos, Color.GreenYellow);
+            Singer.PlaySound("EnemyDamage", .5f);
         }
     }
 }

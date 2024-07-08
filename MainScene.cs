@@ -73,7 +73,7 @@ namespace Villainer
 
             Scroller.CalculateBorders(_map.GetLayer<Entity>("Terrain"),0, 30);
 
-            Singer.PlayMusicEffect("Snake Shake");
+            Singer.PlayMusicEffect("Snake Shake", isLooped : true);
         }
 
         public override void Update(float dt, Inputter inputter)
@@ -91,6 +91,8 @@ namespace Villainer
             _enemy.Animate(dt);
             _enemy.Move(dt);
             _enemy.UpdateCollision(_terrain);
+            _enemy.CollideShoot(_player.ShootsList);
+            _enemy.Update(dt);
 
             _wallsFall.UpdateList(inputter, dt);
             UpdateWallFall();
@@ -247,7 +249,7 @@ namespace Villainer
             Singer.SetSpeed(-.9f);
             Singer.MusicVolume = 0.1f;
             Singer.VolumeFlush();
-            Scroller.Shake(20, -5, 5);
+            Scroller.Shake(20, -3, 3);
             Window.Canvas.ColorEffect = Color.LightGray;
             _damageEffectTimer.Start();
         }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Villainer.Script
 {
-    public class SnakeShake : Platformer
+    public class SnakeShake : Enemy
     {
         public SnakeShake() : base()
         {

@@ -25,6 +25,12 @@
 /processorParam:Quality=Best
 /build:Audio/SFX/Dash.wav
 
+#begin Audio/SFX/EnemyDamage.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/EnemyDamage.wav
+
 #begin Audio/SFX/Jump.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -48,6 +54,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/SFX/Shoot.wav
+
+#begin Audio/SFX/SnakeHitGround.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/SnakeHitGround.wav
 
 #begin Audio/SFX/StartFall.wav
 /importer:WavImporter
