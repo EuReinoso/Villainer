@@ -9,11 +9,11 @@
     ],
     "fileStates": {
         "Villainer.tmx": {
-            "scale": 1,
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 600.5,
-                "y": 337
+                "x": 348.5,
+                "y": 184
             }
         },
         "Villainer.tsx": {

@@ -28,9 +28,10 @@ namespace Villainer
         Tiled _map;
         Physics _physics;
 
-        List<Wall> _walls;
         List<Wall> _wallsFall = new();
+        List<Wall> _walls;
         List<Entity> _terrain;
+        List<Entity> _fixedWalls;
 
         Timer _damageEffectTimer = new(2);
         #endregion
@@ -50,7 +51,7 @@ namespace Villainer
             _player.Pos = new(100, 500);
 
             _enemy = new();
-            _enemy.Pos = new(1000, 500);
+            _enemy.Pos = new(800, 550);
 
             _physics = new();
             _physics.Gravity = new Vector2(0, 25);
@@ -67,9 +68,10 @@ namespace Villainer
             var spriteSheet = new SpriteSheet(content, "Map/Tiles", 32, 32);
 
             _map =  new Tiled(spriteSheet);
-            _map.ReadMap(MgFiles.RootDirectory + "/Content/Map/map1.json");
+            _map.ReadMap(MgFiles.RootDirectory + "/Content/Map/Villainer.json");
             _terrain = _map.GetLayer<Entity>("Terrain");
             _walls = _map.GetLayer<Wall>("Walls");
+            _fixedWalls = _map.GetLayer<Entity>("FixedWalls");
 
             Scroller.CalculateBorders(_map.GetLayer<Entity>("Terrain"),0, 30);
 
@@ -90,7 +92,7 @@ namespace Villainer
 
             _enemy.Animate(dt);
             _enemy.Move(dt);
-            _enemy.UpdateCollision(_terrain);
+            //_enemy.UpdateCollision(_terrain);
             _enemy.CollideShoot(_player.ShootsList);
             _enemy.Update(dt);
 
@@ -101,6 +103,10 @@ namespace Villainer
 
             if (inputter.KeyDown(Keys.E))
                 StartWallFall(10);
+            if (inputter.KeyDown(Keys.S))
+                _enemy.SetAction(SnakeShake.Actions.Atack1Pre);
+            if (inputter.KeyDown(Keys.F))
+                Clock.Speed = Clock.Speed == 0 ? 1 : 0;
 
             _damageEffectTimer.Update(dt);
         }
@@ -108,9 +114,10 @@ namespace Villainer
         public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
         {
             //_map.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
-            //_enemy.DrawRect(shapeBatch, new Color(255, 0, 0, 0.001f), -Scroller.X, -Scroller.Y);
+            _enemy.DrawRect(shapeBatch, new Color(255, 0, 0, 0.001f), -Scroller.X, -Scroller.Y);
 
             Entity.DrawList(_terrain, spriteBatch, -Scroller.X, -Scroller.Y);
+            Entity.DrawList(_fixedWalls, spriteBatch, -Scroller.X, -Scroller.Y);
             Entity.DrawList(_walls, spriteBatch, -Scroller.X, -Scroller.Y);
             Entity.DrawList(_wallsFall, spriteBatch, -Scroller.X, -Scroller.Y);
 
@@ -121,6 +128,9 @@ namespace Villainer
 
             _player.DrawDashEffect(spriteBatch, -Scroller.X, -Scroller.Y);
             _player.Draw(spriteBatch, -Scroller.X, -Scroller.Y);
+
+            NextLayer();
+            shapeBatch.DrawRect(new Rect(_enemy.OffSetPos, 5, 5), Color.Red);
         }
         #endregion
 

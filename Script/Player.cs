@@ -43,11 +43,11 @@ namespace Villainer.Script
         {
             var anim = new Animator(content);
 
-            anim.Add("Player/Player_idle", "Idle", 25, 32, new() { 8, 8, 8, 8 });
-            anim.Add("Player/Player_walk", "Walk", 24, 32, new() { 7, 7, 7, 7, 7, 7, 7, 7 });
-            anim.Add("Player/Player_dash", "Dash", 25, 32, new() { 7, 7, 7 }, onReset : DefaultAction);
-            anim.Add("Player/Player_shoot", "Shoot", 23, 32, new() { 3, 3, 3, 6, 3, 3 }, onReset : DefaultAction);
-            anim.Add("Player/Player_shoot_up", "ShootUp", 23, 32, new() { 3, 3, 3, 6, 3, 3 }, onReset: DefaultAction);
+            anim.Add("Player/Player_idle", "Idle", 25, 32, new List<int>() { 8, 8, 8, 8 });
+            anim.Add("Player/Player_walk", "Walk", 24, 32, new List<int>() { 7, 7, 7, 7, 7, 7, 7, 7 });
+            anim.Add("Player/Player_dash", "Dash", 25, 32, new List<int>() { 7, 7, 7 }, onReset : DefaultAction);
+            anim.Add("Player/Player_shoot", "Shoot", 23, 32, new List<int>() { 3, 3, 3, 6, 3, 3 }, onReset : DefaultAction);
+            anim.Add("Player/Player_shoot_up", "ShootUp", 23, 32, new List<int>() { 3, 3, 3, 6, 3, 3 }, onReset: DefaultAction);
 
             SetAnimator(anim);
             SetAction("Idle");
@@ -64,7 +64,7 @@ namespace Villainer.Script
             IsBorderAutoUpdate = true;
 
             ShootAnimator = new(content);
-            ShootAnimator.Add("Player/Shoot", "Shoot", 16, 16, new() { 10, 10, 10 });
+            ShootAnimator.Add("Player/Shoot", "Shoot", 16, 16, new List<int>() { 10, 10, 10 });
         }
 
         public void Update(float dt)

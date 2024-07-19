@@ -109,6 +109,30 @@
 /processorParam:TextureFormat=Color
 /build:Effect/Default/Triangle.png
 
+#begin Enemy/SnakeShake_1_pre.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/SnakeShake_1_pre.png
+
+#begin Enemy/SnakeShake_1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/SnakeShake_1.png
+
 #begin Enemy/SnakeShake_idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
